@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../supabaseClient';
 import { useLanguage } from '../contexts/LanguageContext';
 import './Login.css'; // Reuse Login styles
 
@@ -10,7 +10,6 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useAuth();
     const { t } = useLanguage();
     const navigate = useNavigate();
 
@@ -28,14 +27,24 @@ const Signup = () => {
             return;
         }
 
-        // Mock signup - in a real app, this would call an API
-        // For now, we just log them in with the provided email
+        // Supabase Signup
         try {
-            await login(email, password);
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        full_name: name,
+                    },
+                },
+            });
+
+            if (error) throw error;
+
             alert(t('signup.success'));
             navigate('/');
         } catch (err) {
-            setError('Failed to create account');
+            setError(err.message);
         }
     };
 

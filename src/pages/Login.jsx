@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../supabaseClient';
 import { useLanguage } from '../contexts/LanguageContext';
 import './Login.css';
 
@@ -8,7 +8,6 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useAuth();
     const { t } = useLanguage();
     const navigate = useNavigate();
 
@@ -16,10 +15,17 @@ const Login = () => {
         e.preventDefault();
         setError('');
         try {
-            await login(email, password);
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) throw error;
+
             navigate('/');
         } catch (err) {
             setError(t('auth.loginError'));
+            console.error(err);
         }
     };
 
