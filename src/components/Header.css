@@ -1,0 +1,139 @@
+.header {
+    background-color: var(--color-bg);
+    border-bottom: 1px solid rgba(74, 59, 50, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1rem 0;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo a {
+    font-family: var(--font-main);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: -0.02em;
+}
+
+.mode-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 0.3rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.mode-toggle-btn:hover {
+    background-color: #e0e0e0;
+    color: var(--color-primary);
+}
+
+.mode-toggle-btn.active {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    border-color: var(--color-secondary);
+}
+
+.mode-text {
+    font-weight: 600;
+    display: none;
+}
+
+@media (min-width: 480px) {
+    .mode-text {
+        display: inline;
+    }
+}
+
+.nav-desktop {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .nav-desktop {
+        display: flex;
+        gap: 2rem;
+    }
+}
+
+.nav-link {
+    font-size: 1rem;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--color-primary);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    position: relative;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lang-btn {
+    gap: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+}
+
+.lang-btn:hover {
+    color: var(--color-primary);
+}
+
+.cart-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.mobile-menu-btn {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .mobile-menu-btn {
+        display: none;
+    }
+}
