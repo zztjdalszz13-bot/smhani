@@ -30,7 +30,7 @@ const Login = () => {
     };
 
     return (
-        <div className="login-page container">
+        <div className="login-container">
             <div className="login-card">
                 <h2 className="login-title">{t('auth.loginTitle')}</h2>
 
