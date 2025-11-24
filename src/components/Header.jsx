@@ -81,11 +81,11 @@ const Header = () => {
       </div>
 
       {/* Mobile Menu Overlay & Drawer */}
-      <div className={`mobile-menu-overlay ${isMenuOpen ? 'open' : ''}`} onClick={closeMenu}></div>
-      <div className={`mobile-menu-drawer ${isMenuOpen ? 'open' : ''}`}>
+      <div className={`mobile-menu-overlay ${isMenuOpen ? 'is-open' : ''}`} onClick={closeMenu}></div>
+      <div className={`mobile-menu-drawer ${isMenuOpen ? 'is-open' : ''}`}>
         <div className="drawer-header">
           <span className="drawer-title">Menu</span>
-          <button className="close-btn" onClick={closeMenu}>&times;</button>
+
         </div>
         <nav className="drawer-nav">
           <Link to="/" className="drawer-link" onClick={closeMenu}>{t('nav.home')}</Link>

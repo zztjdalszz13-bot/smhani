@@ -1,3 +1,76 @@
+/* =========================================
+   1. Default Styles (Desktop First)
+   ========================================= */
+
+.header {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+/* Desktop Navigation - Visible by default */
+.nav-desktop {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--color-primary);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.icon-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--color-primary);
 }
 
 .cart-count {
@@ -5,7 +78,7 @@
     top: 0;
     right: 0;
     background-color: var(--color-secondary);
-    color: var(--color-white);
+    color: white;
     font-size: 0.7rem;
     width: 18px;
     height: 18px;
@@ -13,15 +86,210 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    font-weight: bold;
 }
 
+.lang-btn {
+    gap: 0.5rem;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+}
+
+.lang-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.mode-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    color: var(--color-text-light);
+    transition: all 0.2s ease;
+}
+
+.mode-toggle-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.mode-toggle-btn.active {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.mode-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* =========================================
+   2. Mobile Elements (Hidden on Desktop)
+   ========================================= */
+
+/* Strictly hide mobile elements on desktop */
 .mobile-menu-btn {
-    display: block;
+    display: none;
 }
 
-@media (min-width: 768px) {
-    .mobile-menu-btn {
+.mobile-menu-overlay {
+    display: none;
+}
+
+.mobile-menu-drawer {
+    display: none;
+}
+
+/* =========================================
+   3. Mobile Styles (Max-width: 768px)
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* 1. Hide Desktop Elements */
+    .nav-desktop {
+        display: none !important;
+    }
+
+    .desktop-only {
+        display: none !important;
+    }
+
+    .mode-text {
         display: none;
+    }
+
+    .mode-toggle-btn {
+        padding: 0.4rem;
+    }
+
+    /* 2. Hamburger Button - Always Visible & Top Priority */
+    .mobile-menu-btn {
+        display: flex !important;
+        position: relative;
+        z-index: 3000 !important;
+        /* Highest priority as requested */
+    }
+
+    /* 3. Common Styles for Overlay & Drawer (Closed State) */
+    .mobile-menu-overlay,
+    .mobile-menu-drawer {
+        position: fixed;
+        top: 0;
+        height: 100vh;
+        visibility: hidden;
+        transition: all 0.3s ease-in-out;
+        pointer-events: none;
+        /* Prevent clicks when closed */
+    }
+
+    /* 4. Overlay Specifics */
+    .mobile-menu-overlay {
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        z-index: 1000;
+    }
+
+    /* 5. Drawer Specifics */
+    .mobile-menu-drawer {
+        right: 0;
+        /* Align to right */
+        width: 280px;
+        /* Side drawer width */
+        background-color: #ffffff;
+        transform: translateX(100%);
+        /* Hide to right */
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 6. Open State (.is-open) */
+    .mobile-menu-overlay.is-open,
+    .mobile-menu-drawer.is-open {
+        visibility: visible;
+        pointer-events: auto;
+        /* Allow clicks when open */
+    }
+
+    .mobile-menu-overlay.is-open {
+        opacity: 1;
+    }
+
+    .mobile-menu-drawer.is-open {
+        transform: translateX(0);
+        /* Slide in */
+    }
+
+    /* 7. Drawer Content Styles */
+    .drawer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .drawer-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--color-primary);
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--color-text);
+        line-height: 1;
+    }
+
+    .drawer-nav {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+
+    .drawer-link {
+        text-decoration: none;
+        color: var(--color-text);
+        font-size: 1.1rem;
+        font-weight: 500;
+        padding: 0.5rem 0;
+        transition: color 0.2s;
+    }
+
+    .drawer-link:hover {
+        color: var(--color-primary);
+    }
+
+    .drawer-divider {
+        height: 1px;
+        background-color: #eee;
+        margin: 1rem 0;
+    }
+
+    .lang-toggle {
+        display: flex;
+        align-items: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        width: 100%;
+        font-size: 1rem;
+        color: var(--color-text);
+        font-weight: 500;
     }
 }
