@@ -36,6 +36,15 @@ const Header = () => {
           <Link to="/" className="nav-link">{t('nav.home')}</Link>
           <Link to="/shop" className="nav-link">{t('nav.shop')}</Link>
           <Link to="/about" className="nav-link">{t('nav.about')}</Link>
+          {user && (
+            <>
+              <Link to="/booking" className="nav-link">진료 예약</Link>
+              <Link to="/mypage" className="nav-link">마이페이지</Link>
+            </>
+          )}
+          {user && user.email === 'zztjdalszz13@naver.com' && (
+            <Link to="/admin" className="nav-link" style={{ color: '#ff4444' }}>관리자 페이지</Link>
+          )}
         </nav>
 
         <div className="header-actions">

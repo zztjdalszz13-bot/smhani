@@ -9,6 +9,9 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Cart from './pages/Cart';
 import About from './pages/About';
+import Booking from './pages/Booking';
+import Admin from './pages/Admin';
+import MyPage from './pages/MyPage';
 import './App.css';
 
 function ScrollToTop() {
@@ -35,6 +38,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/about" element={<About />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </main>
       <Footer />

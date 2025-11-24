@@ -31,7 +31,7 @@ export const products = [
             ko: "황제의 보약이라 불리는 공진단. 사향, 녹용, 당귀, 산수유를 엄선하여 빚어냈습니다. 기력 회복과 집중력 강화가 필요한 분들께 최고의 선물입니다.",
             en: "Called the Emperor's medicine. Carefully crafted with musk, deer antler, angelica, and cornus fruit. The best gift for those who need energy recovery and concentration enhancement."
         },
-        image: "https://images.unsplash.com/photo-1606913084603-3e7702b01627?auto=format&fit=crop&q=80&w=800"
+        image: "/images/products/gongjindan.png"
     },
     {
         id: 3,
