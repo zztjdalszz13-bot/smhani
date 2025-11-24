@@ -161,6 +161,17 @@
         display: none !important;
     }
 
+    /* Mobile Only Elements */
+    .mobile-only {
+        display: block;
+    }
+
+    .user-greeting {
+        font-size: 0.9rem;
+        margin-right: 0.8rem;
+        color: var(--color-text);
+    }
+
     .mode-text {
         display: none;
     }
@@ -173,8 +184,15 @@
     .mobile-menu-btn {
         display: flex !important;
         position: relative;
-        z-index: 3000 !important;
+        z-index: 3001 !important;
         /* Highest priority as requested */
+        color: var(--color-text) !important;
+        flex-shrink: 0 !important;
+        /* Prevent shrinking */
+        width: 40px !important;
+        height: 40px !important;
+        justify-content: center;
+        align-items: center;
     }
 
     /* 3. Common Styles for Overlay & Drawer (Closed State) */
@@ -237,6 +255,12 @@
         align-items: center;
         padding: 1.5rem;
         border-bottom: 1px solid #eee;
+        flex-shrink: 0;
+    }
+
+    .drawer-content {
+        flex-grow: 1;
+        overflow-y: auto;
     }
 
     .drawer-title {
@@ -291,5 +315,33 @@
         font-size: 1rem;
         color: var(--color-text);
         font-weight: 500;
+    }
+
+    /* 8. Drawer Footer (Logout) */
+    .drawer-footer {
+        flex-shrink: 0;
+        padding: 1.5rem;
+        border-top: 1px solid #eee;
+        background-color: #f9f9f9;
+    }
+
+    .drawer-logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #eee;
+        background-color: white;
+        border-radius: 8px;
+        color: #ff4444;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .drawer-logout-btn:hover {
+        background-color: #fff5f5;
     }
 }

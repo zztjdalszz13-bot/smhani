@@ -60,9 +60,16 @@ const Header = () => {
           </button>
 
           {user ? (
-            <button className="icon-btn" onClick={logout} title={t('auth.logoutBtn')}>
-              <LogOut size={20} />
-            </button>
+            <>
+              {/* Mobile: User Greeting */}
+              <span className="user-greeting mobile-only">
+                <strong>{user.user_metadata.full_name || user.email} 님</strong>
+              </span>
+              {/* Desktop: Logout Button */}
+              <button className="icon-btn desktop-only" onClick={logout} title={t('auth.logoutBtn')}>
+                <LogOut size={20} />
+              </button>
+            </>
           ) : (
             <Link to="/login" className="icon-btn" title={t('auth.loginTitle')}>
               <User size={20} />
@@ -85,29 +92,40 @@ const Header = () => {
       <div className={`mobile-menu-drawer ${isMenuOpen ? 'is-open' : ''}`}>
         <div className="drawer-header">
           <span className="drawer-title">Menu</span>
-
         </div>
-        <nav className="drawer-nav">
-          <Link to="/" className="drawer-link" onClick={closeMenu}>{t('nav.home')}</Link>
-          <Link to="/shop" className="drawer-link" onClick={closeMenu}>{t('nav.shop')}</Link>
-          <Link to="/about" className="drawer-link" onClick={closeMenu}>{t('nav.about')}</Link>
-          {user && (
-            <>
-              <Link to="/booking" className="drawer-link" onClick={closeMenu}>진료 예약</Link>
-              <Link to="/mypage" className="drawer-link" onClick={closeMenu}>마이페이지</Link>
-            </>
-          )}
-          {user && user.email === 'zztjdalszz13@naver.com' && (
-            <Link to="/admin" className="drawer-link" onClick={closeMenu} style={{ color: '#ff4444' }}>관리자 페이지</Link>
-          )}
 
-          <div className="drawer-divider"></div>
+        <div className="drawer-content">
+          <nav className="drawer-nav">
+            <Link to="/" className="drawer-link" onClick={closeMenu}>{t('nav.home')}</Link>
+            <Link to="/shop" className="drawer-link" onClick={closeMenu}>{t('nav.shop')}</Link>
+            <Link to="/about" className="drawer-link" onClick={closeMenu}>{t('nav.about')}</Link>
+            {user && (
+              <>
+                <Link to="/booking" className="drawer-link" onClick={closeMenu}>진료 예약</Link>
+                <Link to="/mypage" className="drawer-link" onClick={closeMenu}>마이페이지</Link>
+              </>
+            )}
+            {user && user.email === 'zztjdalszz13@naver.com' && (
+              <Link to="/admin" className="drawer-link" style={{ color: '#ff4444' }} onClick={closeMenu}>관리자 페이지</Link>
+            )}
 
-          <button className="drawer-link lang-toggle" onClick={() => { toggleLanguage(); closeMenu(); }}>
-            <Globe size={18} style={{ marginRight: '8px' }} />
-            {language === 'ko' ? 'English' : '한국어'}
-          </button>
-        </nav>
+            <div className="drawer-divider"></div>
+
+            <button className="lang-toggle" onClick={() => { toggleLanguage(); closeMenu(); }}>
+              <Globe size={18} style={{ marginRight: '0.5rem' }} />
+              {language === 'ko' ? 'English' : '한국어'}
+            </button>
+          </nav>
+        </div>
+
+        {user && (
+          <div className="drawer-footer">
+            <button className="drawer-logout-btn" onClick={() => { logout(); closeMenu(); }}>
+              <LogOut size={18} />
+              <span>로그아웃</span>
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );
