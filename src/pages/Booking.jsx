@@ -5,6 +5,10 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import './Login.css'; // Reuse Login styles for consistency
 
+const CLINIC_HOURS = [
+    '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00'
+];
+
 const Booking = () => {
     const { user } = useAuth();
     const { t } = useLanguage();
@@ -15,12 +19,47 @@ const Booking = () => {
     const [name, setName] = useState('');
     const [symptom, setSymptom] = useState('');
     const [loading, setLoading] = useState(false);
+    const [reservationCounts, setReservationCounts] = useState({});
 
     useEffect(() => {
         if (!user) {
             navigate('/login');
         }
     }, [user, navigate]);
+
+    useEffect(() => {
+        if (date) {
+            fetchReservationCounts(date);
+        } else {
+            setReservationCounts({});
+        }
+    }, [date]);
+
+    const fetchReservationCounts = async (selectedDate) => {
+        try {
+            const { data, error } = await supabase.rpc('get_daily_reservation_counts', {
+                check_date: selectedDate
+            });
+
+            if (error) throw error;
+
+            // Convert array to object for easier lookup: { "09:00": 2, "10:00": 0, ... }
+            const counts = {};
+            // Initialize all hours with 0
+            CLINIC_HOURS.forEach(h => counts[h] = 0);
+
+            // Update with actual data
+            if (data) {
+                data.forEach(item => {
+                    counts[item.time] = item.count;
+                });
+            }
+
+            setReservationCounts(counts);
+        } catch (error) {
+            console.error('Error fetching reservation counts:', error);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -51,6 +90,12 @@ const Booking = () => {
         }
     };
 
+    const getTimeSlotStyle = (count) => {
+        if (count === 0) return { color: '#22c55e' }; // Green
+        if (count < 5) return { color: '#f97316' }; // Orange
+        return { color: '#ef4444', fontWeight: 'bold' }; // Red Bold
+    };
+
     return (
         <div className="login-container">
             <div className="login-card">
@@ -79,20 +124,38 @@ const Booking = () => {
 
                     <div className="form-group">
                         <label>시간</label>
-                        <select
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
-                            required
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ddd' }}
-                        >
-                            <option value="">시간 선택</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                        </select>
+                        <div className="time-slots" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            {CLINIC_HOURS.map((hour) => {
+                                const count = reservationCounts[hour] || 0;
+                                const style = getTimeSlotStyle(count);
+                                return (
+                                    <label key={hour} style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        padding: '0.75rem',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        background: time === hour ? '#f0f9ff' : 'white',
+                                        borderColor: time === hour ? '#007bff' : '#ddd'
+                                    }}>
+                                        <input
+                                            type="radio"
+                                            name="time"
+                                            value={hour}
+                                            checked={time === hour}
+                                            onChange={(e) => setTime(e.target.value)}
+                                            style={{ marginRight: '10px' }}
+                                            required
+                                        />
+                                        <span style={{ flex: 1 }}>{hour}</span>
+                                        <span style={style}>
+                                            (예약 환자 : {count}명)
+                                        </span>
+                                    </label>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <div className="form-group">
@@ -106,7 +169,7 @@ const Booking = () => {
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
+                    <button type="submit" className="btn btn-primary btn-full" disabled={loading || !time}>
                         {loading ? '예약 중...' : '예약하기'}
                     </button>
                 </form>
