@@ -50,8 +50,15 @@ const Booking = () => {
 
             // Update with actual data
             if (data) {
+                console.log('RPC 결과 (Updated):', data); // Debug log
                 data.forEach(item => {
-                    counts[item.time] = item.count;
+                    // API now returns booking_time in HH:mm format
+                    if (!item.booking_time) return;
+
+                    const timeKey = item.booking_time;
+                    if (counts.hasOwnProperty(timeKey)) {
+                        counts[timeKey] = item.count;
+                    }
                 });
             }
 
@@ -124,35 +131,23 @@ const Booking = () => {
 
                     <div className="form-group">
                         <label>시간</label>
-                        <div className="time-slots" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div className="time-grid">
                             {CLINIC_HOURS.map((hour) => {
                                 const count = reservationCounts[hour] || 0;
                                 const style = getTimeSlotStyle(count);
+                                const isSelected = time === hour;
+
                                 return (
-                                    <label key={hour} style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        padding: '0.75rem',
-                                        border: '1px solid #ddd',
-                                        borderRadius: '8px',
-                                        cursor: 'pointer',
-                                        background: time === hour ? '#f0f9ff' : 'white',
-                                        borderColor: time === hour ? '#007bff' : '#ddd'
-                                    }}>
-                                        <input
-                                            type="radio"
-                                            name="time"
-                                            value={hour}
-                                            checked={time === hour}
-                                            onChange={(e) => setTime(e.target.value)}
-                                            style={{ marginRight: '10px' }}
-                                            required
-                                        />
-                                        <span style={{ flex: 1 }}>{hour}</span>
-                                        <span style={style}>
-                                            (예약 환자 : {count}명)
+                                    <div
+                                        key={hour}
+                                        className={`time-btn ${isSelected ? 'selected' : ''}`}
+                                        onClick={() => setTime(hour)}
+                                    >
+                                        <span className="time-text">{hour}</span>
+                                        <span className="congestion-info" style={style}>
+                                            예약 {count}명
                                         </span>
-                                    </label>
+                                    </div>
                                 );
                             })}
                         </div>
